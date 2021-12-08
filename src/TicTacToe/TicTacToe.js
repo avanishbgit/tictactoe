@@ -11,7 +11,7 @@ const TicTacToe = () => {
         return <td onClick={()=> handleClick(num)}><h2>{cells[num]}</h2></td>
     }
     const handleClick = (num) =>{
-        if (!gamest && draw) return;
+        if (!gamest) return;
         if (cells[num]==='X' || cells[num]==='O') return;
         let squares = [...cells];
 
