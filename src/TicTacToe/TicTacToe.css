@@ -1,0 +1,39 @@
+table td{
+    border: 2px solid black;
+    width: 100px;
+    height: 100px
+}
+
+.container{
+    /* display: flex;
+    flex-direction: column;
+    width: 1920px;
+    align-items: center; */
+    margin: auto;
+    width: 50%;
+    /* border: 3px solid green; */
+    padding: 10px;
+}
+
+.tbl {
+    margin: auto;
+}
+
+.X {
+    color: goldenrod;
+}
+
+.O {
+    color: blue;
+}
+
+body {
+    background-color: lightgray;
+}
+
+button {
+    width: 200px;
+    height: 50px;
+    background-color: darkgray;
+    color: black;
+}
