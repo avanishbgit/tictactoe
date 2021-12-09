@@ -1,37 +1,43 @@
 import React, { useState } from 'react';
 import './TicTacToe.css';
 
-const TicTacToe = () => {
-    const [turn, setTurn] = useState('X')
-    const [cells, setCells] = useState(Array(9).fill(''));
-    const [winner, setWinner] = useState();
-    const [gamest, setGamest] = useState(true);
-    const [draw, setDraw] = useState(false);
-    const Cell = ({num}) => {
-        return <td onClick={()=> handleClick(num)}><h2>{cells[num]}</h2></td>
+class Cell extends React.Component {
+    render(){return <td onClick={()=> this.handleClick(this.props.num)}><h2>{this.state.cells[this.props.num]}</h2></td>}
+}
+
+class TicTacToe extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state= {turn: 'X', cells: Array(9).fill(''), winner: null, gamest: true, draw: false}
     }
-    const handleClick = (num) =>{
-        if (!gamest) return;
-        if (cells[num]==='X' || cells[num]==='O') return;
-        let squares = [...cells];
+    // const [turn, setTurn] = useState('X')
+    // const [cells, setCells] = useState(Array(9).fill(''));
+    // const [winner, setWinner] = useState();
+    // const [gamest, setGamest] = useState(true);
+    // const [draw, setDraw] = useState(false);
+    
+    handleClick(num) {
+        if (!this.state.gamest) return;
+        if (this.state.cells[num]==='X' || this.state.cells[num]==='O') return;
+        let squares = [...this.state.cells];
 
         //alert("Cell "+num)
-        if (turn==='X') {
+        if (this.state.turn==='X') {
             squares[num]='X'
-            setTurn('O');
+            this.setState({ turn: 'O' });
         }
         else {
             squares[num]='O' 
-            setTurn('X')
+            this.setState({ turn: 'X' })
         }
-        setCells(squares)
-        checkWin(squares)
-        checkDraw(squares)
+        this.setState({ cells: squares })
+        this.checkWin(squares)
+        this.checkDraw(squares)
         //console.log(squares)
     }
 
-    const checkDraw = (squares) => {
-        if (!gamest) return;
+    checkDraw(squares) {
+        if (!this.state.gamest) return;
         for (let i in squares) {
             //console.log(cells[i]);
             if (squares[i]==='') { 
@@ -41,17 +47,19 @@ const TicTacToe = () => {
             
         }
         console.log("sus");
-        setDraw(true);
-        setGamest(false);
-        setWinner("No one")
+        this.setState({ draw: true });
+        this.setState({ gamest: false });
+        this.setState({ winner: "No one" })
     }
 
-    const restart = () => {
-        setCells(Array(9).fill(''));
-        setWinner();
-        setGamest(true);
+    
+
+    restart() {
+        this.setState({ cells: Array(9).fill('') });
+        this.setState({ winner: null });
+        this.setState({ gamest: true });
     }
-    const checkWin = (squares) => {
+    checkWin(squares) {
         let condition = [[0,1,2],[3,4,5],[6,7,8],
                         [0,4,8],[2,4,6]
                         ,[0,3,6],[1,4,7],[2,5,8]];
@@ -59,22 +67,23 @@ const TicTacToe = () => {
             //alert(squares[condition[i][0]])
             if (squares[condition[i][0]] !== '') {
                 if (squares[condition[i][0]] === 'X' && squares[condition[i][1]] === 'X' && squares[condition[i][2]] === 'X') {
-                    setWinner('X');
+                    this.setState({ winner: 'X' });
                     //alert("X wins");
-                    setGamest(false);
+                    this.setState({ gamest: false });
                 }
                 else if (squares[condition[i][0]] === 'O' && squares[condition[i][1]] === 'O' && squares[condition[i][2]] === 'O') {
-                    setWinner('O');
+                    this.setState({ winner: 'O' });
                     //alert("O wins");
-                    setGamest(false);
+                    this.setState({ gamest: false });
                 }
             }
         }
     }
-    return (<div className="container">
-            {winner && (<h1>{winner} is the winner</h1>)}
+    render() {
+        return (<div className="container">
+            {this.state.winner && (<h1>{this.state.winner} is the winner</h1>)}
                 <table className="tbl">
-                    <h2 className={turn}>Turn: {turn}</h2>
+                    <h2 className={this.state.turn}>Turn: {this.state.turn}</h2>
                     <tbody>
                         <tr>
                             <Cell num={0}/>
@@ -93,9 +102,10 @@ const TicTacToe = () => {
                         </tr>
                     </tbody>
                 </table> <br/><br/>
-                <button onClick={()=>restart()}>New Game</button>
+                <button onClick={()=>this.restart()}>New Game</button>
             </div>
     )
+    }
 }
 
 export default TicTacToe
